@@ -9,30 +9,42 @@
 </head>
 
 <body>
+	<H1>Currency Rate Checker</H1>
 
 	<div class="divMargin">
-		Enter Currency shorted name: <br>
+		Enter currency shortened name:
+		<br>
 		<input id="currencyName" type="text" placeholder="eg. EUR, USD, PLN">
 	</div>
 
 	<div class="divMargin">
-		What type of currency information you need: <br>
-		<select id="currencyInformationType" >
-			<option>Buy</option>
-			<option>Sell</option>
+		What type of information do you need:
+		<br>
+		<select id="currencyInformationType">
+			<option>Bid</option>
+			<option>Ask</option>
 			<option>Average</option>
 		</select>
 	</div>
 
 	<div class="divMargin">
-		Enter date what you are interested in: <br>
-		<input id="currencyDate" type="text" placeholder="DD/MM/YYYY">
+		Enter start date:
+		<div><input id="currencyStartDate" type="text" placeholder="YYYY-MM-DD"></div>
 	</div>
+
+	<div class="divMargin">
+		Enter end date:
+		<div><input id="currencyEndDate" type="text" placeholder="YYYY-MM-DD"></div>
+		<div class = "smallLetters">*Only last 93 days available</div>
+	</div>
+
 
 	<button id="submitButton" class="divMargin" type="submit">Submit</button>
 
 
-<div id="id01">aaaaa</div>
+
+	<div id="answer"></div>
+
 </body>
 
 </html>

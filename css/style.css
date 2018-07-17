@@ -1,9 +1,14 @@
 body {
     background-color: rgb(49, 145, 145);
+    font-size: 18px;
 }
 
 
 
 .divMargin {
     margin: 1rem;
+}
+
+.smallLetters {
+    font-size: 0.8rem;
 }
