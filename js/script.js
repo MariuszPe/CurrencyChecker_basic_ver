@@ -1,6 +1,6 @@
 window.onload = function () {
-    document.getElementById('currencyName').value = '';
-    document.getElementById('currencyStartDate').value = '';
+    // document.getElementById('currencyName').value = '';
+    // document.getElementById('currencyStartDate').value = '';
 
 
     document.querySelector("#submitButton").addEventListener("click", function () {
@@ -9,20 +9,31 @@ window.onload = function () {
         let currencyStartDate = document.querySelector("#currencyStartDate").value;
         let currencyEndDate = document.querySelector("#currencyEndDate").value;
         console.log(currencyName, currencyInformationType, currencyStartDate, currencyEndDate);
+        document.getElementById("answer").innerHTML = '';
 
         let ciType = bidAskAverage(currencyInformationType);
 
         let xmlhttp = new XMLHttpRequest();
         let url = 'http://api.nbp.pl/api/exchangerates/rates/' + ciType + '/' + currencyName +
-        '/' + currencyStartDate;
-        let cR = currRepresentation(currencyInformationType);
+        '/' + currencyStartDate + '/' + currencyEndDate;
+
+        let cR = currTable(currencyInformationType);
 
         xmlhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
-                let myArr = JSON.parse(this.responseText);
-                document.getElementById("answer").innerHTML = "<strong>Date: </strong>" +
-                    myArr.rates[0].effectiveDate + "<br>" + "<strong>Rate: </strong>" + 
-                    myArr.rates[0][cR];
+                let myArr = (JSON.parse(this.responseText)).rates;
+
+                myArr.forEach(i => {
+                    document.getElementById("answer").innerHTML += "<strong>Date: </strong>" +
+                    i.effectiveDate + " <strong>Rate: </strong>" + i[cR] + "<br>";
+
+                    
+
+                                     
+                });
+
+            } else if (this.status == 404) {
+                document.getElementById("answer").innerHTML = "Selected data doesn't exist";
             }
         };
         xmlhttp.open("GET", url, true);
@@ -40,7 +51,7 @@ window.onload = function () {
     }
 
 
-    function currRepresentation(currencyInformationType) {
+    function currTable(currencyInformationType) {
         let cit = currencyInformationType;
         if(cit === 'Bid') {
             return 'bid';
@@ -50,10 +61,6 @@ window.onload = function () {
             return 'mid';
         }
     }
-
-    
-
-
 
 
 }

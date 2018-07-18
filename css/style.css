@@ -4,11 +4,20 @@ body {
 }
 
 
-
 .divMargin {
     margin: 1rem;
 }
 
 .smallLetters {
     font-size: 0.8rem;
+}
+.centerText {
+    text-align: center;
+}
+
+.containerHalf {
+    box-sizing: border-box;
+    float: left;
+    width: 50%;
+    padding: 3rem;
 }
