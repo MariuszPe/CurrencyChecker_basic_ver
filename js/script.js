@@ -8,14 +8,15 @@ window.onload = function () {
         let currencyInformationType = document.querySelector("#currencyInformationType").value;
         let currencyStartDate = document.querySelector("#currencyStartDate").value;
         let currencyEndDate = document.querySelector("#currencyEndDate").value;
-        console.log(currencyName, currencyInformationType, currencyStartDate, currencyEndDate);
+        let dataContainer = [];
+        //console.log(currencyName, currencyInformationType, currencyStartDate, currencyEndDate);
         document.getElementById("answer").innerHTML = '';
 
         let ciType = bidAskAverage(currencyInformationType);
 
         let xmlhttp = new XMLHttpRequest();
         let url = 'http://api.nbp.pl/api/exchangerates/rates/' + ciType + '/' + currencyName +
-        '/' + currencyStartDate + '/' + currencyEndDate;
+            '/' + currencyStartDate + '/' + currencyEndDate;
 
         let cR = currTable(currencyInformationType);
 
@@ -25,11 +26,8 @@ window.onload = function () {
 
                 myArr.forEach(i => {
                     document.getElementById("answer").innerHTML += "<strong>Date: </strong>" +
-                    i.effectiveDate + " <strong>Rate: </strong>" + i[cR] + "<br>";
-
-                    
-
-                                     
+                        i.effectiveDate + " <strong>Rate: </strong>" + i[cR] + "<br>";
+                    drawChart(i.effectiveDate);
                 });
 
             } else if (this.status == 404) {
@@ -43,7 +41,7 @@ window.onload = function () {
 
     function bidAskAverage(currencyInformationType) {
         let cit = currencyInformationType;
-        if(cit === 'Bid' || cit === 'Ask') {
+        if (cit === 'Bid' || cit === 'Ask') {
             return 'c';
         } else {
             return 'a';
@@ -53,7 +51,7 @@ window.onload = function () {
 
     function currTable(currencyInformationType) {
         let cit = currencyInformationType;
-        if(cit === 'Bid') {
+        if (cit === 'Bid') {
             return 'bid';
         } else if (cit === 'Ask') {
             return 'ask';
@@ -63,4 +61,61 @@ window.onload = function () {
     }
 
 
+
+
+
+
+    function drawChart(date) {
+
+        let dateY = date.substr(0, 4);
+        let dateM = date.substr(5, 2);
+        let dateD = date.substr(8, 2);
+        console.log(date);
+        let chart = new CanvasJS.Chart("myChart", {
+            animationEnabled: true,
+            title: {
+                text: "Currency rate in selected peroid of time"
+            },
+            axisX: {
+                valueFormatString: "YYYY MM DD",
+                crosshair: {
+                    enabled: true,
+                    snapToDataPoint: true
+                }
+            },
+            axisY: {
+                title: "Closing Price (in USD)",
+                includeZero: false,
+                valueFormatString: "$##0.00",
+                crosshair: {
+                    enabled: true,
+                    snapToDataPoint: true,
+                    labelFormatter: function (e) {
+                        return "$" + CanvasJS.formatNumber(e.value, "##0.00");
+                    }
+                }
+            },
+            data: [
+                {
+                    type: "line",
+                    dataPoints: [
+                        { x: new Date(dateY, dateM, dateD), y: 76.727997 },
+                        { x: new Date(dateY, dateM, dateD), y: 71.727997 }
+
+                    ]
+                }
+            ]
+        });
+        chart.render();
+    }
+
+
+
+
+    //check https://canvasjs.com/javascript-charts/json-data-api-ajax-chart/
+
+
 }
+
+
+
